@@ -69,6 +69,34 @@ export const constantRoutes = [
   },
 
   {
+    path: '/myinfo',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'MyInfo',
+        component: () => import('@/views/my/info'),
+        meta: { title: '个人信息', icon: 'info' }
+      }
+    ]
+  },
+
+  {
+    path: '/mydata',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'MyData',
+        component: () => import('@/views/my/evalution'),
+        meta: { title: '我的评估', icon: 'table' }
+      }
+    ]
+  },
+
+  {
     path: '/evaluation',
     component: Layout,
     children: [
