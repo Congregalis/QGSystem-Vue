@@ -2,46 +2,59 @@
   <div class="dashboard-container">
     <el-row>
       <el-col :span="12">
-        <div id='evalution' style="width: 600px;height:400px;"></div>
+        <div id='evalution' style="width: 600px; height: 400px;"></div>
       </el-col>
       <el-col :span="12">
-        <div id='rate' style="width: 600px;height:400px;"></div>
+        <div id='rate' style="width: 600px; height: 400px;"></div>
       </el-col>
     </el-row>
     <el-col :span="12">
-        <div id='distribution' style="width: 600px;height:400px;"></div>
-      </el-col>
+      <div id='distribution' style="width: 1200px; height: 700px;"></div>
+    </el-col>
   </div>
 </template>
 
 <script>
 import * as echarts from 'echarts'
-import { getPicData } from '@/api/dashboard'
+import { getPicData, getDistributionData } from '@/api/dashboard'
 
 export default {
   name: 'Dashboard',
   data() {
     return {
       uncheckedNum: 0,
-    checkedNum: 0,
-    fluency: [],
-    reasonable: [],
-    relevance: []
+      checkedNum: 0,
+      fluency: [],
+      reasonable: [],
+      relevance: [],
+      distribution: []
     }
   },
   methods: {
     fetchData() {
       getPicData().then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         this.uncheckedNum = response.data.uncheckedNum;
         this.checkedNum = response.data.checkedNum;
         this.fluency = response.data.fluency;
         this.reasonable = response.data.reasonable;
         this.relevance = response.data.relevance;
 
-        this.setupEvaluation();
-        this.setupRate();
-        this.setupDistribution();
+        getDistributionData().then(response => {
+          var tmp = [];
+          response.data.forEach(function name(item) {
+            tmp.push({
+              'name': item['title'],
+              'value': item['count']
+            });
+          });
+          this.distribution = JSON.parse(JSON.stringify(tmp));
+          this.distribution = tmp;
+
+          this.setupEvaluation();
+          this.setupRate();
+          this.setupDistribution();
+        });
       });
     },
     setupEcharts() {
@@ -88,17 +101,10 @@ export default {
     },
     setupDistribution() {
       var myChart = echarts.init(document.getElementById('distribution'));
-      var mockData =  [
-        {value: 10, name: '5'},
-        {value: 22, name: '1'},
-        {value: 52, name: '2'},
-        {value: 10, name: '3'},
-        {value: 28, name: '4'},
-      ]
       var option = {
         title: {
-            text: '问题类型分布情况',
-            subtext: '测试',
+            text: '问题类型分布',
+            subtext: '包含所有',
             left: 'center'
         },
         tooltip: {
@@ -113,7 +119,7 @@ export default {
                 name: '地区',
                 type: 'pie',
                 radius: '50%',
-                data: mockData,
+                data: this.distribution,
                 emphasis: {
                     itemStyle: {
                         shadowBlur: 10,
