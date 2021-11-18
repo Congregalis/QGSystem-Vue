@@ -126,6 +126,7 @@
 
 <script>
 import { deleteQuestion, getFirstUnchecked, getRandom, rateQuestion, updateQuestion } from '@/api/evaluation'
+import { getToken } from '@/utils/auth'
 
 export default {
   data() {
@@ -149,7 +150,8 @@ export default {
       fluency: 0,
       reasonable: 0,
       relevance: 0,
-      count: 0
+      count: 0,
+      token: getToken()
     }
   },
   created() {
@@ -217,7 +219,8 @@ export default {
         id: this.question_id,
         fluency: this.fluency,
         reasonable: this.reasonable,
-        relevance: this.relevance
+        relevance: this.relevance,
+        token: this.token
       }).then(response => {
         // 获取下一个
         this.showSkeleton = true;
