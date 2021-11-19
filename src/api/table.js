@@ -13,3 +13,17 @@ export function getList(params) {
     params
   })
 }
+
+export function getListByToken(params) {
+  // // MOCK
+  // return request({
+  //   url: '/vue-admin-template/table/list',
+  //   method: 'get',
+  //   params
+  // })
+  return request({
+    url: '/question/all/' + params.token + '/' + params.pageNumber,
+    method: 'get',
+    params
+  })
+}

@@ -136,15 +136,28 @@ export const constantRoutes = [
   },
 
   {
-    path: 'external-link',
+    path: '/about',
     component: Layout,
     children: [
       {
-        path: 'https://github.com/Congregalis',
-        meta: { title: '关于我们', icon: 'link' }
+        path: 'index',
+        name: 'About',
+        component: () => import('@/views/about/index'),
+        meta: { title: '关于我们', icon: 'el-icon-s-opportunity' }
       }
     ]
   },
+
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'https://github.com/Congregalis',
+  //       meta: { title: '关于我们', icon: 'link' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

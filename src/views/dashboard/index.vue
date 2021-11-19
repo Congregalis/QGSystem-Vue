@@ -8,9 +8,16 @@
         <div id='rate' style="width: 600px; height: 400px;"></div>
       </el-col>
     </el-row>
-    <el-col :span="12">
-      <div id='distribution' style="width: 1200px; height: 700px;"></div>
-    </el-col>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <div id='type' style="width: 600px; height: 400px;"></div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12" :offset="1">
+        <div id='distribution' style="width: 1200px; height: 700px;"></div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -54,14 +61,12 @@ export default {
           this.setupEvaluation();
           this.setupRate();
           this.setupDistribution();
+          this.setupType();
         });
       });
     },
     setupEcharts() {
       this.fetchData();
-      // this.setupEvaluation();
-      // this.setupRate();
-      // this.setupDistribution();
     },
     setupEvaluation() {
       var myChart = echarts.init(document.getElementById('evalution'));
@@ -103,7 +108,7 @@ export default {
       var myChart = echarts.init(document.getElementById('distribution'));
       var option = {
         title: {
-            text: '问题类型分布',
+            text: '问题地区分布',
             subtext: '包含所有',
             left: 'center'
         },
@@ -128,6 +133,35 @@ export default {
                     }
                 }
             }
+        ]
+      };
+      myChart.setOption(option);
+    },
+    setupType() {
+      var myChart = echarts.init(document.getElementById('type'));
+      var mock = [
+        {value: 10, name: '1'},
+        {value: 15, name: '2'},
+        {value: 31, name: '3'},
+      ]
+      var option = {
+        title: {
+            text: '问题类型分布',
+            subtext: '测试数据',
+            left: 'center'
+        },
+        xAxis: {
+          type: 'category',
+          data: ['Why', 'What', 'How', 'Which', 'Where', 'When', 'Others']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: [120, 200, 150, 80, 70, 110, 130],
+            type: 'bar'
+          }
         ]
       };
       myChart.setOption(option);

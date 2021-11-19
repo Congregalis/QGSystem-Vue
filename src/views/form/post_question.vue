@@ -58,23 +58,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$message({
-          message: '提交成功!',
-          type: 'success'
-      })
-      // 发送网络请求
-      this.req({
-        url: "getTableData",
-        data: {},
-        method: "GET"
-      }).then(
-        res => {
-          console.log("tableData : ", res)
-        },
-        err => {
-          console.log("err: ", err)
-        }
-      )
+      this.$message('Building...');
     },
     onCancel() {
       this.clear()
