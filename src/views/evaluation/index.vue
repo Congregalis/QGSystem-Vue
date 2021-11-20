@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-          <span class="title"><strong>QA-Pairs Evaluation (In Order)</strong></span>
+          <span class="title"><strong>QA-Pairs Evaluation (Random)</strong></span>
           <el-button style="float: right; padding: 3px 0; font-size:15px" type="text" @click="randomChooseOne">换一题</el-button>
       </div>
       <div class="text item">

@@ -15,3 +15,11 @@ export function getDistributionData(params) {
     params
   })
 }
+
+export function getTypeData(params) {
+  return request({
+    url: '/question/type',
+    method: 'get',
+    params
+  })
+}

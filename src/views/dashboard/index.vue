@@ -23,7 +23,7 @@
 
 <script>
 import * as echarts from 'echarts'
-import { getPicData, getDistributionData } from '@/api/dashboard'
+import { getPicData, getDistributionData, getTypeData } from '@/api/dashboard'
 
 export default {
   name: 'Dashboard',
@@ -34,7 +34,9 @@ export default {
       fluency: [],
       reasonable: [],
       relevance: [],
-      distribution: []
+      distribution: [],
+      typeX: [],
+      typeY: []
     }
   },
   methods: {
@@ -58,10 +60,22 @@ export default {
           this.distribution = JSON.parse(JSON.stringify(tmp));
           this.distribution = tmp;
 
-          this.setupEvaluation();
-          this.setupRate();
-          this.setupDistribution();
-          this.setupType();
+          getTypeData().then(response => {
+
+            var tmpX = [];
+            var tmpY = [];
+            response.data.forEach(function name(item) {
+              tmpX.push(item['title']);
+              tmpY.push(item['count'])
+            })
+            this.typeX = tmpX;
+            this.typeY = tmpY;
+
+            this.setupEvaluation();
+            this.setupRate();
+            this.setupDistribution();
+            this.setupType();
+          });
         });
       });
     },
@@ -108,7 +122,7 @@ export default {
       var myChart = echarts.init(document.getElementById('distribution'));
       var option = {
         title: {
-            text: '问题地区分布',
+            text: '问题地理分布',
             subtext: '包含所有',
             left: 'center'
         },
@@ -139,27 +153,22 @@ export default {
     },
     setupType() {
       var myChart = echarts.init(document.getElementById('type'));
-      var mock = [
-        {value: 10, name: '1'},
-        {value: 15, name: '2'},
-        {value: 31, name: '3'},
-      ]
       var option = {
         title: {
             text: '问题类型分布',
-            subtext: '测试数据',
+            subtext: '包含所有',
             left: 'center'
         },
         xAxis: {
           type: 'category',
-          data: ['Why', 'What', 'How', 'Which', 'Where', 'When', 'Others']
+          data: this.typeX
         },
         yAxis: {
           type: 'value'
         },
         series: [
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: this.typeY,
             type: 'bar'
           }
         ]
