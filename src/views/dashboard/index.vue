@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <el-row>
+    <el-row class="shadow">
       <el-col :span="12">
         <div id='evalution' style="width: 600px; height: 400px;"></div>
       </el-col>
@@ -8,13 +8,13 @@
         <div id='rate' style="width: 600px; height: 400px;"></div>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="12" :offset="6">
+    <el-row type="flex" justify="space-around" class="shadow">
+      <el-col :span="12">
         <div id='type' style="width: 600px; height: 400px;"></div>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="12" :offset="1">
+    <el-row type="flex" justify="space-around" class="shadow">
+      <el-col :span="22">
         <div id='distribution' style="width: 1200px; height: 700px;"></div>
       </el-col>
     </el-row>
@@ -223,5 +223,12 @@ export default {
     line-height: 46px;
   }
   margin-bottom: 5%;
+}
+.shadow {
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 3%;
+  padding: 2%;
+  border-radius: 25px;
 }
 </style>
