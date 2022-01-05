@@ -44,8 +44,9 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div class="tips">
-        <span style="margin-right:20px;"> 请联系管理员获取账号密码 </span>
-        <!-- <span> password: zsclqg</span> -->
+        <span style="margin-right:15px;">公共访问账号：public</span>
+        <span>密码：public</span>
+        <span style="float: right"><strong>标注者</strong>请联系管理员获取账密</span>
       </div>
 
     </el-form>

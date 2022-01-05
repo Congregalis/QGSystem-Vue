@@ -6,7 +6,7 @@
 
 ## Demo
 
-为防止对数据造成破坏，线上demo暂不公开
+[线上demo](http://zscl.xjtudlc.com:8089/)
 
 ![](demo_img/table.png)
 ![](demo_img/table-detail.png)
