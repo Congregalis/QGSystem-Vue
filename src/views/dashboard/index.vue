@@ -8,14 +8,22 @@
         <div id='rate' style="width: 600px; height: 400px;"></div>
       </el-col>
     </el-row>
-    <el-row type="flex" justify="space-around" class="shadow">
+    <el-row class="shadow">
       <el-col :span="12">
-        <div id='type' style="width: 600px; height: 400px;"></div>
+        <div id='type' style="width: 600px; height: 400px; margin: 0 auto"></div>
+      </el-col>
+      <el-col :span="12">
+        <div id='difficulty' style="width: 600px; height: 400px;"></div>
       </el-col>
     </el-row>
+    <!-- <el-row type="flex" justify="space-around" class="shadow">
+      <el-col :span="12">
+        <div id='type' style="width: 600px; height: 400px; margin: 0 auto"></div>
+      </el-col>
+    </el-row> -->
     <el-row type="flex" justify="space-around" class="shadow">
       <el-col :span="22">
-        <div id='distribution' style="width: 1200px; height: 700px;"></div>
+        <div id='distribution' style="width: 1000px; height: 700px; margin: 0 auto"></div>
       </el-col>
     </el-row>
   </div>
@@ -36,7 +44,28 @@ export default {
       relevance: [],
       distribution: [],
       typeX: [],
-      typeY: []
+      typeY: [],
+      difficultyX: ['简单', '中等', '困难'],
+      difficultyY:[
+        {
+          value: 80,
+          itemStyle: {
+            color: '#67c23a'
+          }
+        },
+        {
+          value: 20,
+          itemStyle: {
+            color: '#E6A23C'
+          }
+        },
+        {
+          value: 10,
+          itemStyle: {
+            color: '#F56C6C'
+          }
+        }
+      ]
     }
   },
   methods: {
@@ -75,6 +104,7 @@ export default {
             this.setupRate();
             this.setupDistribution();
             this.setupType();
+            this.setupDifficulty();
           });
         });
       });
@@ -124,14 +154,15 @@ export default {
         title: {
             text: '问题地理分布',
             subtext: '包含所有',
-            left: 'center'
+            left: 'center',
+            top: '5%'
         },
         tooltip: {
             trigger: 'item'
         },
         legend: {
-            orient: 'vertical',
-            left: 'left',
+            type: 'scroll',
+            orient: 'horizontal',
         },
         series: [
             {
@@ -169,7 +200,41 @@ export default {
         series: [
           {
             data: this.typeY,
-            type: 'bar'
+            type: 'bar',
+            label: {
+              show: true,
+              position: 'top',
+              color: '#000'
+            },
+          }
+        ]
+      };
+      myChart.setOption(option);
+    },
+    setupDifficulty() {
+      var myChart = echarts.init(document.getElementById('difficulty'));
+      var option = {
+        title: {
+            text: '问题难度分布',
+            subtext: '仅包含已评估数据',
+            left: 'center',
+        },
+        xAxis: {
+          type: 'category',
+          data: this.difficultyX
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: this.difficultyY,
+            type: 'bar',
+            label: {
+              show: true,
+              position: 'inside',
+              color: '#fff'
+            },
           }
         ]
       };
@@ -180,7 +245,6 @@ export default {
       var option = {
         title: {
             text: '问题评估分数分布',
-            left: ''
         },
         legend: {},
         tooltip: {},
