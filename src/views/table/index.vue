@@ -83,9 +83,12 @@
           <el-tag :type="scope.row.checkedTimes === 0 ? 'primary' : 'success'" disable-transitions>{{ scope.row.checkedTimes > 0 ? 'checked' : 'unchecked' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Score" width="110" align="center">
+      <el-table-column label="Difficulty" width="110" align="center">
         <template slot-scope="scope">
-          {{ scope.row.score }}
+          <!-- {{ scope.row.difficulty }} -->
+          <el-tag
+          :type="scope.row.difficulty === 0 ? 'success' :  ( scope.row.difficulty === 1 ? 'warning' : 'danger')"
+          disable-transitions>{{scope.row.difficulty === 0 ? '简单' :  ( scope.row.difficulty === 1 ? '中等' : '困难')}}</el-tag>
         </template>
       </el-table-column>
     </el-table>

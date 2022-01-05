@@ -82,6 +82,23 @@
             </div>
           </el-col>
         </el-row>
+        <el-row></el-row>
+        <el-row :gutter="20" type="flex" align="middle">
+          <el-col :span="3"><div class="grid-content label-col"><label>问题难度</label></div></el-col>
+          <el-col :span="5"><div style="color:gray;">问答该问题的难易程度</div></el-col>
+          <el-col :span="12">
+            <el-select v-model="difficulty" placeholder="请选择">
+              <el-option
+                v-for="item in difficulties"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+                <span style="float: left">{{ item.label }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.note }}</span>
+              </el-option>
+            </el-select>
+          </el-col>
+        </el-row>
 
         <el-row type="flex" justify="space-between">
           <el-button-group>
@@ -150,6 +167,20 @@ export default {
       fluency: 0,
       reasonable: 0,
       relevance: 0,
+      difficulties: [{
+        value: '0',
+        label: '简单',
+        note: '单句即可得答案'
+      }, {
+        value: '1',
+        label: '中等',
+        note: '需要多句推理'
+      }, {
+        value: '2',
+        label: '困难',
+        note: '难以得出答案'
+      }],
+      difficulty: '',
       count: 0,
       token: getToken()
     }
@@ -220,6 +251,7 @@ export default {
         fluency: this.fluency,
         reasonable: this.reasonable,
         relevance: this.relevance,
+        difficulty: this.difficulty,
         token: this.token
       }).then(response => {
         // 获取下一个
@@ -232,6 +264,7 @@ export default {
         this.fluency = 0;
         this.reasonable = 0;
         this.relevance = 0;
+        this.difficulty = '';
       })
     },
     randomChooseOne() {
