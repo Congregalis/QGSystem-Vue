@@ -23,3 +23,11 @@ export function getTypeData(params) {
     params
   })
 }
+
+export function getDifficultyData(params) {
+  return request({
+    url: '/question/difficulty',
+    method: 'get',
+    params
+  })
+}

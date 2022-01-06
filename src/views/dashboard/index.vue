@@ -31,7 +31,7 @@
 
 <script>
 import * as echarts from 'echarts'
-import { getPicData, getDistributionData, getTypeData } from '@/api/dashboard'
+import { getPicData, getDistributionData, getTypeData, getDifficultyData } from '@/api/dashboard'
 
 export default {
   name: 'Dashboard',
@@ -48,19 +48,19 @@ export default {
       difficultyX: ['简单', '中等', '困难'],
       difficultyY:[
         {
-          value: 80,
+          value: 0,
           itemStyle: {
             color: '#67c23a'
           }
         },
         {
-          value: 20,
+          value: 0,
           itemStyle: {
             color: '#E6A23C'
           }
         },
         {
-          value: 10,
+          value: 0,
           itemStyle: {
             color: '#F56C6C'
           }
@@ -100,11 +100,25 @@ export default {
             this.typeX = tmpX;
             this.typeY = tmpY;
 
-            this.setupEvaluation();
-            this.setupRate();
-            this.setupDistribution();
-            this.setupType();
-            this.setupDifficulty();
+            getDifficultyData().then(response => {
+              console.log(response.data)
+              for (const item of response.data) {
+                console.log(item)
+                if (0 == item['title']) this.difficultyY[0].value = item['count'];
+                else if (1 == item['title']) this.difficultyY[1].value = item['count'];
+                else if (2 == item['title']) this.difficultyY[2].value = item['count'];
+              }
+              console.log("difficulty " + this.difficultyY[0].value);
+
+              // 设置表格
+              this.setupEvaluation();
+              this.setupRate();
+              this.setupDistribution();
+              this.setupType();
+              this.setupDifficulty();
+            });
+
+            
           });
         });
       });

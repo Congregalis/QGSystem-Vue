@@ -1,11 +1,20 @@
 <template>
   <div class="app-container">
+    <el-input placeholder="请输入内容" v-model="input" class="input-with-select">
+      <el-select v-model="select" slot="prepend" placeholder="请选择">
+        <el-option label="Question" value="1"></el-option>
+        <el-option label="Title" value="2"></el-option>
+        <el-option label="Id" value="3"></el-option>
+      </el-select>
+      <el-button slot="append" icon="el-icon-search"></el-button>
+    </el-input>
     <el-table
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
       fit
       highlight-current-row
+      @filter-change="filterChange"
     >
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -77,18 +86,22 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="Status" width="110" align="center" 
         :filters="[{ text: 'checked', value: 1 }, { text: 'unchecked', value: 0 }]"
-        :filter-method="filterStatus">
+        :filter-multiple="false"
+        :column-key="'status'">
         <template slot-scope="scope">
           <!-- <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag> -->
           <el-tag :type="scope.row.checkedTimes === 0 ? 'primary' : 'success'" disable-transitions>{{ scope.row.checkedTimes > 0 ? 'checked' : 'unchecked' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Difficulty" width="110" align="center">
+      <el-table-column label="Difficulty" width="110" align="center"
+        :filters="[{ text: '简单', value: 0 }, { text: '中等', value: 1 }, { text: '困难', value: 2 }]"
+        :filter-multiple="true"
+        :column-key="'difficulty'">
         <template slot-scope="scope">
           <!-- {{ scope.row.difficulty }} -->
           <el-tag
-          :type="scope.row.difficulty === 0 ? 'success' :  ( scope.row.difficulty === 1 ? 'warning' : 'danger')"
-          disable-transitions>{{scope.row.difficulty === 0 ? '简单' :  ( scope.row.difficulty === 1 ? '中等' : '困难')}}</el-tag>
+          :type="getDifficultyTag(scope.row.difficulty).tag"
+          disable-transitions>{{getDifficultyTag(scope.row.difficulty).label}}</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -128,6 +141,10 @@ export default {
       pageSize: 10,
       pageNumber: 1,
       listLoading: true,
+      select: '',
+      input: '',
+      globalStatus: -1,
+      globalDifficulty: []
     }
   },
   created() {
@@ -154,8 +171,15 @@ export default {
       }
     },
     filterStatus(value, row) {
-      console.log(row.checkedTimes);
+      // console.log(row.checkedTimes);
       return row.checkedTimes == value;
+    },
+    filterChange(column) {
+      if (typeof(column.status) != 'undefined')
+        this.globalStatus = column.status.length == 0 ? -1 : column.status[0];
+      else if (typeof(column.difficulty) != 'undefined') 
+        this.globalDifficulty = column.difficulty;
+      console.log(this.globalStatus + " " + this.globalDifficulty);
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -168,6 +192,30 @@ export default {
     //保留n位小数
     roundFun(value, n) {
       return Math.round(value*Math.pow(10,n))/Math.pow(10,n);
+    },
+    getDifficultyTag(difficulty) {
+      switch (difficulty) {
+        case 0:
+          return {
+            label:'简单',
+            tag: 'success'
+          };
+        case 1:
+          return {
+            label:'中等',
+            tag: 'warning'
+          };
+        case 2:
+          return {
+            label:'困难',
+            tag: 'danger'
+          };
+        default:
+          return {
+            label:'未评',
+            tag: 'info'
+          };
+      }
     }
   }
 }
@@ -192,5 +240,11 @@ export default {
 }
 .el-rate {
   margin-top: 10px;
+}
+.el-select {
+  width: 130px;
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
 }
 </style>
