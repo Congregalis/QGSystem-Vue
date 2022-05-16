@@ -148,6 +148,46 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/qg',
+    component: Layout,
+    // redirect: '/datainput',
+    name: 'QG',
+    meta: { title: '问题生成', icon: 'el-icon-goods' },
+    children: [
+      {
+        path: 'datainput',
+        name: 'DataInput',
+        component: () => import('@/views/qg/DataInput'),
+        meta: { title: '数据输入' }
+      },
+      {
+        path: 'content',
+        name: 'ContentExtraction',
+        component: () => import('@/views/qg/ContentExtraction'),
+        meta: { title: '内容抽取' }
+      },
+      {
+        path: 'qgevaluation',
+        name: 'QGEvaluation',
+        component: () => import('@/views/qg/QGEvaluation'),
+        meta: { title: '问题生成和评估' }
+      },
+      {
+        path: 'distractor',
+        name: 'DistractorGeneration',
+        component: () => import('@/views/qg/DistractorGeneration'),
+        meta: { title: '干扰项生成' }
+      },
+      {
+        path: 'output',
+        name: 'OutputStorage',
+        component: () => import('@/views/qg/OutputStorage'),
+        meta: { title: '输出入库' }
+      },
+    ]
+  },
+
   // {
   //   path: 'external-link',
   //   component: Layout,
