@@ -27,7 +27,8 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
+  // lintOnSave: process.env.NODE_ENV === 'development', //v0
+  lintOnSave: false,
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -42,8 +43,8 @@ module.exports = {
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
         // target: `http://127.0.0.1:8089/`,
-        target: `http://127.0.0.1:8900/`,
-        // target: `http://47.95.145.72:8089/`,
+        // target: `http://127.0.0.1:8900/`,
+        target: `http://47.95.145.72:8089/qg-server`, // v0
         // public: `192.168.0.123:8080`,
         changeOrigin: true,
         // ws: true,

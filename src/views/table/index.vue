@@ -8,9 +8,13 @@
       </el-select>
       <el-button slot="append" icon="el-icon-search"></el-button>
     </el-input>
+
+    <!--
+    @filter-change:当表格的筛选条件发生变化的时候会触发该事件，参数的值是一个对象，对象的 key 是 column 的 columnKey，对应的 value 为用户选择的筛选条件的数组。
+    v-loading="listLoading"，element-loading-text="Loading":用于实现正在加载的效果-->
     <el-table
-      v-loading="listLoading"
       :data="list"
+      v-loading="listLoading"
       element-loading-text="Loading"
       fit
       highlight-current-row
@@ -61,9 +65,28 @@
                 score-template="{value}">
               </el-rate>
             </el-form-item>
+            <el-form-item label="Difficulty">
+              <el-rate
+                v-model="props.row.difficulty"
+                disabled
+                show-score
+                text-color="#ff9900"
+                score-template="{value}">
+              </el-rate>
+            </el-form-item>
+            <el-form-item label="Score">
+              <el-rate
+                v-model="props.row.score"
+                disabled
+                show-score
+                text-color="#ff9900"
+                score-template="{value}">
+              </el-rate>
+            </el-form-item>
           </el-form>
         </template>
       </el-table-column>
+
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
           {{ scope.row.id }}
@@ -79,20 +102,24 @@
           <span>{{ scope.row.answerText }}</span>
         </template>
       </el-table-column>
+
       <el-table-column label="Title" width="150" align="center">
         <template slot-scope="scope">
           {{ scope.row.reference.title }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center" 
+
+      <el-table-column class-name="status-col" label="Status" width="110" align="center"
         :filters="[{ text: 'checked', value: 1 }, { text: 'unchecked', value: 0 }]"
         :filter-multiple="false"
-        :column-key="'status'">
+        :column-key="'status'"
+        :filter-method="filterHandler">
         <template slot-scope="scope">
           <!-- <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag> -->
           <el-tag :type="scope.row.checkedTimes === 0 ? 'primary' : 'success'" disable-transitions>{{ scope.row.checkedTimes > 0 ? 'checked' : 'unchecked' }}</el-tag>
         </template>
       </el-table-column>
+
       <el-table-column label="Difficulty" width="110" align="center"
         :filters="[{ text: '简单', value: 0 }, { text: '中等', value: 1 }, { text: '困难', value: 2 }]"
         :filter-multiple="true"
@@ -150,6 +177,7 @@ export default {
   created() {
     this.fetchData(this.pageNumber)
   },
+
   methods: {
     fetchData(val) {
       this.listLoading = true
@@ -174,13 +202,20 @@ export default {
       // console.log(row.checkedTimes);
       return row.checkedTimes == value;
     },
+    // column的key是columnKey，对应的 value 为用户选择的筛选条件的数组filters。
     filterChange(column) {
+      // console.log(column)
       if (typeof(column.status) != 'undefined')
         this.globalStatus = column.status.length == 0 ? -1 : column.status[0];
-      else if (typeof(column.difficulty) != 'undefined') 
+      else if (typeof(column.difficulty) != 'undefined')
         this.globalDifficulty = column.difficulty;
       console.log(this.globalStatus + " " + this.globalDifficulty);
     },
+    filterHandler(value, row, column) {
+      // console.log(value, row, column)
+      return row.checkedTimes === value;
+    },
+
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
